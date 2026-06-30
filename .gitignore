@@ -17,6 +17,11 @@ dist/
 # datasets and raw data
 dataset/raw/
 dataset/Data/
+dataset/cache/
+dataset/my_photos/cache/
+dataset/my_photos/
+dataset/real/
+dataset/screen/
 dataset/**/*.zip
 *.zip
 RecapturedImages.zip
@@ -25,13 +30,12 @@ SubjectiveTestImages.zip
 
 # local/manual test data
 manual_test/
-dataset/my_photos/
-dataset/real/
-dataset/screen/
 
 # caches/logs
 *.log
 .cache/
+cache/
+logs/
 .DS_Store
 Thumbs.db
 

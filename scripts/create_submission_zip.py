@@ -1,8 +1,7 @@
 import os
 import zipfile
-import shutil
 
-base = r"e:\ML Latest Assignment\ML Latest Assignment"
+base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 out_dir = os.path.join(base, "submission")
 os.makedirs(out_dir, exist_ok=True)
 zip_path = os.path.join(out_dir, "SalesCode_Recapture_Detector.zip")

@@ -1,10 +1,22 @@
 import os
 import shutil
+import argparse
 
 os.makedirs('manual_test/unknown/real', exist_ok=True)
 os.makedirs('manual_test/unknown/screen', exist_ok=True)
 
-brain_dir = r"C:\Users\USER\.gemini\antigravity-ide\brain\e6ca1744-1e1f-4043-b567-ff9fefaf44be"
+parser = argparse.ArgumentParser(description="Copy local manual test images into manual_test/unknown.")
+parser.add_argument(
+    "source_dir",
+    nargs="?",
+    default=os.environ.get("SALES_CODE_SOURCE_IMAGE_DIR", ""),
+    help="Directory containing the source images, or set SALES_CODE_SOURCE_IMAGE_DIR.",
+)
+args = parser.parse_args()
+
+source_dir = args.source_dir
+if not source_dir:
+    raise SystemExit("Provide source_dir or set SALES_CODE_SOURCE_IMAGE_DIR.")
 
 files = {
     'selfie_person_1782829299972.png': 'real/selfie.png',
@@ -16,7 +28,7 @@ files = {
 }
 
 for src, dst in files.items():
-    src_path = os.path.join(brain_dir, src)
+    src_path = os.path.join(source_dir, src)
     if os.path.exists(src_path):
         shutil.copy(src_path, os.path.join('manual_test/unknown', dst))
         print(f"Copied {src} to {dst}")

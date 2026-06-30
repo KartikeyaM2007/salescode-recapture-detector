@@ -91,7 +91,7 @@ Because of constraints (no deep learning), we relied on OpenCV CV features. To f
 ## Current Repo Structure
 
 ```text
-e:\ML Latest Assignment\ML Latest Assignment\
+<project-root>/
   - backend/
     - app.py
   - frontend/

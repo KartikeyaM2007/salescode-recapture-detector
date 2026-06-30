@@ -3,7 +3,6 @@ import sys
 import json
 import joblib
 import cv2
-import numpy as np
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -25,7 +24,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "model.joblib")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_PATH = os.path.join(BASE_DIR, "model.joblib")
+METADATA_PATH = os.path.join(BASE_DIR, "model_metadata.json")
+FRONTEND_DIST = os.path.join(BASE_DIR, "frontend", "dist")
 model = None
 
 try:
@@ -34,20 +36,16 @@ try:
 except Exception as e:
     print(f"Failed to load model: {e}")
 
-@app.get("/api/health")
-def health_check():
-    import json
-    meta_path = os.path.join(os.path.dirname(__file__), "..", "model_metadata.json")
+def get_health_payload():
     meta = {}
-    if os.path.exists(meta_path):
-        with open(meta_path, 'r') as f:
+    if os.path.exists(METADATA_PATH):
+        with open(METADATA_PATH, "r", encoding="utf-8") as f:
             meta = json.load(f)
 
-    # Read phone test results if available
     phone_metrics = {}
-    reports_path = os.path.join(os.path.dirname(__file__), "..", "reports", "phone_metrics.json")
+    reports_path = os.path.join(BASE_DIR, "reports", "phone_metrics.json")
     if os.path.exists(reports_path):
-        with open(reports_path, 'r') as f:
+        with open(reports_path, "r", encoding="utf-8") as f:
             phone_metrics = json.load(f)
 
     return {
@@ -57,6 +55,14 @@ def health_check():
         "metadata": meta,
         "phone_metrics": phone_metrics
     }
+
+@app.get("/health")
+def root_health_check():
+    return get_health_payload()
+
+@app.get("/api/health")
+def health_check():
+    return get_health_payload()
 
 def get_risk_level(score: float, threshold: float):
     if score >= threshold: return "likely recaptured/screen"
@@ -138,7 +144,23 @@ async def predict_endpoint(file: UploadFile = File(...)):
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
-# Serve frontend if it exists
-FRONTEND_DIST = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 if os.path.exists(FRONTEND_DIST):
-    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")
+    assets_dir = os.path.join(FRONTEND_DIST, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    @app.get("/")
+    def serve_index():
+        return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
+
+    @app.get("/{full_path:path}")
+    def serve_frontend(full_path: str):
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API route not found.")
+
+        requested_path = os.path.abspath(os.path.join(FRONTEND_DIST, full_path))
+        dist_root = os.path.abspath(FRONTEND_DIST)
+        if requested_path.startswith(dist_root) and os.path.isfile(requested_path):
+            return FileResponse(requested_path)
+
+        return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))

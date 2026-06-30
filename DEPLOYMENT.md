@@ -1,60 +1,95 @@
 # Hugging Face Spaces Deployment Guide
 
-This project is fully configured to be deployed as a Docker Space on Hugging Face. The configuration uses a multi-stage Dockerfile that builds the React frontend and serves it via the FastAPI backend, all on port 7860.
+This project is prepared for a Hugging Face Docker Space. The Docker image builds the React frontend, copies the compiled `frontend/dist` into the Python runtime image, and serves both the FastAPI API and frontend from one process on port `7860`.
 
-## Deployment Steps
+## Required Files
 
-1. **Create a New Space on Hugging Face:**
-   - Go to [Hugging Face Spaces](https://huggingface.co/spaces) and click "Create new Space".
-   - **Name**: `SalesCode-Recapture-Detector` (or your choice).
-   - **License**: Choose your preferred license.
-   - **Select the Space SDK**: Choose **Docker**.
-   - **Space Hardware**: Free tier (CPU basic) is sufficient for this lightweight model.
-   - **Visibility**: Public or Private.
+Keep these files in the repository you push to GitHub or Hugging Face:
 
-2. **Push Repository Files:**
-   Clone your new Space repository and copy the required files from this project into it, or use the Hugging Face web UI to upload files.
-   
-   **Required Files:**
-   - `Dockerfile`
-   - `.dockerignore`
-   - `requirements.txt`
-   - `README.md` (MUST include the YAML frontmatter at the top)
-   - `model.joblib`
-   - `model_metadata.json`
-   - `predict.py`
-   - `features.py`
-   - `backend/` directory
-   - `frontend/` directory (The Dockerfile will build the frontend automatically)
+- `Dockerfile`
+- `.dockerignore`
+- `requirements.txt`
+- `README.md`
+- `model.joblib`
+- `model_metadata.json`
+- `predict.py`
+- `features.py`
+- `backend/`
+- `frontend/`
+- `APPROACH.md`
+- `DATASET_SOURCES.md`
 
-   > **DO NOT UPLOAD:**
-   > - The 8GB ICL dataset (`dataset/` folder)
-   > - `node_modules/` or `venv/`
-   > - Large `.zip` files
+Do not upload datasets, `node_modules`, virtual environments, local manual tests, submission zips, or `.env` files.
 
-3. **Verify Configuration:**
-   Ensure your `README.md` starts with:
-   ```yaml
-   ---
-   title: SalesCode Recapture Detector
-   emoji: 🛡️
-   colorFrom: green
-   colorTo: gray
-   sdk: docker
-   app_port: 7860
-   ---
-   ```
+## Local Docker Test
 
-4. **Wait for Build:**
-   Hugging Face will automatically detect the `Dockerfile` and begin building. You can click on the "Logs" button to watch the `npm install`, `npm run build`, and `pip install` steps.
+```bash
+docker build -t salescode-recapture-detector .
+docker run --rm -p 7860:7860 salescode-recapture-detector
+```
 
-5. **Test Your Space:**
-   Once the status turns to "Running", the UI should appear in the Space frame.
-   - Test by dragging a real photo and a screen photo to ensure the backend integration is successful.
-   - You can also hit the health endpoint directly via your Space URL (e.g., `https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE_NAME/api/health`).
+Then open:
 
-## Troubleshooting
+```text
+http://127.0.0.1:7860/health
+http://127.0.0.1:7860/
+```
 
-- **Build Times Out or Fails on OOM:** Ensure you pushed `.dockerignore` so that massive datasets/caches aren't being sent to the Docker context.
-- **Port Error:** Ensure `app_port: 7860` is in the `README.md` and `EXPOSE 7860` is in the `Dockerfile`.
-- **OpenCV Errors:** We strictly use `opencv-python-headless` in `requirements.txt`. If you switch to `opencv-python`, the Docker slim image will fail missing `libGL.so.1`.
+Expected health response includes `"status": "ok"` and `"model_loaded": true`.
+
+## GitHub Push Steps
+
+For a new GitHub repository:
+
+```bash
+git init
+git status
+git add .
+git status
+git commit -m "Initial commit: SalesCode recapture detector"
+git branch -M main
+git remote add origin <YOUR_GITHUB_REPO_URL>
+git push -u origin main
+```
+
+For an existing GitHub repository:
+
+```bash
+git status
+git add .
+git commit -m "Prepare SalesCode recapture detector for GitHub and Hugging Face"
+git push
+```
+
+## Hugging Face Space Setup
+
+1. Create a new Space at [Hugging Face Spaces](https://huggingface.co/spaces).
+2. Choose the Docker SDK.
+3. Use port `7860`; the README frontmatter sets `app_port: 7860`.
+4. Push the repository files to the Space repo.
+5. Wait for the Docker build to finish.
+6. Open the app and test one real sample and one screen sample.
+7. Test the health route at `https://huggingface.co/spaces/<USER>/<SPACE>/health` or from the running Space URL.
+
+## Logs
+
+Use the Space "Logs" panel to inspect build and runtime output. Useful things to check:
+
+- `npm install` and `npm run build` complete in the frontend stage.
+- `pip install -r requirements.txt` completes in the Python stage.
+- Uvicorn starts on `0.0.0.0:7860`.
+- `GET /health` returns status `ok`.
+
+## Common Build Errors
+
+- **Docker context too large:** confirm `.dockerignore` excludes `dataset`, `manual_test`, `submission`, `node_modules`, zips, caches, and virtual environments.
+- **OpenCV import error:** keep `opencv-python-headless` in `requirements.txt`.
+- **Port error:** confirm `EXPOSE 7860`, the Uvicorn command uses `--port 7860`, and README frontmatter has `app_port: 7860`.
+- **Frontend missing:** confirm Docker built `frontend/dist` and copied it into `/app/frontend/dist`.
+- **API 404 from UI:** frontend production calls should use relative `/api/...` paths.
+
+## Notes
+
+- Do not retrain or change the model threshold for deployment.
+- Do not include the full ICL dataset or phone photo dataset in GitHub or Hugging Face.
+- `python predict.py image.jpg` must continue to print only one float in normal mode.
