@@ -1,12 +1,13 @@
----
-title: SalesCode Recapture Detector
-Live Link : https://huggingface.co/spaces/Kartikeym2007/salescode-recapture-detector
----
+
 
 # SalesCode Recapture Detector
 
 **Author:** Kartikeya
 
+---
+title: SalesCode Recapture Detector
+Live Link : https://huggingface.co/spaces/Kartikeym2007/salescode-recapture-detector
+---
 This project detects whether an input image is a direct real photo or a recaptured image, such as a photo of a screen or printout. The output is a single score from `0` to `1`.
 
 - `0` means real photo
