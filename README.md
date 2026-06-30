@@ -1,6 +1,6 @@
 ---
 title: SalesCode Recapture Detector
-emoji: 🛡️
+emoji: shield
 colorFrom: green
 colorTo: gray
 sdk: docker
@@ -11,179 +11,121 @@ app_port: 7860
 
 **Author:** Kartikeya
 
-> ## 🎯 Accuracy Highlights
-> 
-> **ICL Dataset (Lab Photos):** 
-> * **`~99.2% F1 Score`**
-> 
-> **Personal Phone Photos (~53 Real World Photos):** 
-> * **`~79.5% Honest 5 Fold CV F1`** 
-> * **`100% Calibration Score`**
+This project detects whether an input image is a direct real photo or a recaptured image, such as a photo of a screen or printout. The output is a single score from `0` to `1`.
 
-A fast computer vision and machine learning pipeline that figures out if an image is a real photo or a picture of a screen or printout.
+- `0` means real photo
+- `1` means screen, printout, or recaptured photo
 
-## Quick Summary
-
-This project tackles the Spot the Fake Photo assignment. It gives you a score from 0 to 1. A score of 0 means it is a real camera photo, while 1 means it is a recaptured image from a screen or printout. Since the score is continuous, you can pick whatever threshold you want. I built a practical hybrid solution that runs completely on the CPU. You do not need a GPU or any paid APIs to run this.
-
-## Assignment Requirement
+The normal command line contract is:
 
 ```bash
-python predict.py some_image.jpg
+python predict.py image.jpg
 ```
 
-Expected output:
+Normal output is one float only:
 
 ```text
-0.93
+0.4870
 ```
 
-* 0 means real
-* 1 means screen or printout or recaptured
+## Summary
 
-## What I Used
+I built this as a small CPU friendly computer vision pipeline. The model does not look for objects in the image. It looks for capture artifacts: moire patterns, display banding, glare, compression, blur, local frequency spikes, rectangular screen cues, and paper or print texture.
 
-This is not a giant black box model. Here is the stack:
-
-| Component               | Used For                                                | Why                                                     |
-| ----------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
-| Phone Adapted XGBoost   | Final learned classifier                                | Lightweight, fast on CPU, works on 21 numeric features  |
-| OpenCV image processing | Brightness, contrast, sharpness, edges, glare, contours | Captures physical and camera artifacts                  |
-| Frequency analysis      | FFT, local frequency, moiré, banding                    | Detects screen and recapture patterns                   |
-| Rule based correction   | Multi cue screen evidence and natural scene safeguards  | Stops one noisy feature from ruining the score          |
-| Transparent scoring     | raw_model_score + rule_boost_total = final_score        | Makes predictions easy to audit                         |
-
-## Why This Fits the Assignment
-
-The assignment lets us use a trained model, classical CV, frequency analysis, or any custom algorithm. I went with a hybrid approach because catching recaptured images is about spotting artifacts, not recognizing objects. A real photo and a fake photo can both show the exact same flower or building. The giveaway is usually second capture artifacts like moiré, banding, screen glare, blur, compression, and weird frequency spikes.
-
-## Why Not a Heavy Deep Model?
-
-A massive CNN could work, but it ignores the constraints of the assignment. The final system might run on a phone one day, so the solution needs to be small, fast, and cheap. I used handcrafted features and XGBoost because inference is super easy on a CPU, the model file is tiny, and it is much easier to explain why it made a decision. The design is totally fine for future mobile deployment.
-
-## Method: Hybrid CV + Frequency + Lightweight ML
-
-### A. Preprocessing
-Images are loaded and resized. A light Gaussian blur removes sensor noise before the frequency analysis step. The code easily handles JPG, PNG, and mobile image formats. It converts them to both RGB and grayscale to feed different feature families.
-
-### B. Classic CV and Image Processing
-We look at the visual and structural signs of how a photo was captured. This means checking brightness, contrast compression, saturation, and Laplacian sharpness. The model also checks Sobel edge magnitude and edge density to spot the blur you get when aiming a camera at a screen. It also actively looks for overexposed display patches, printout textures, and rectangular screen borders.
-
-### C. Frequency Analysis
-Digital displays shine light through a tight pixel grid. When you photograph them with another camera, you get structured frequency artifacts. I use signal processing to measure global FFT high frequency energy and local patch FFTs. The pipeline also calculates moiré and banding cues by looking for repeating horizontal, vertical, and diagonal frequency peaks from LCD row and column layouts.
-
-### D. Trained Model and Final Formula
-All extracted features go into an XGBoost classifier trained to output a raw screen probability. A strict rule layer then adds multi cue boosts only when several screen cues agree. This stops false positives from natural scenes or random compression artifacts.
+The final classifier is a Phone Adapted XGBoost model trained on handcrafted image features. A conservative rule layer is applied after the raw model score, but only when multiple screen or print cues agree.
 
 ```text
 final_score = clamp(raw_model_score + rule_boost_total, 0, 1)
 ```
 
-Prediction logic:
+Decision threshold:
+
 ```text
-final_score >= 0.65 → screen or recaptured
-final_score < 0.65  → real
+final_score >= 0.65 -> recaptured
+final_score < 0.65  -> real
 ```
 
-## Pipeline Diagram
+## Method
 
-```mermaid
-flowchart LR
-    A[Input Image] --> B[Preprocessing]
-    B --> C[CV Feature Extraction]
-    C --> D[Frequency or FFT Analysis]
-    D --> E[21 Feature Vector]
-    E --> F[Phone Adapted XGBoost]
-    F --> G[Raw Model Score]
-    G --> H[Strict Rule Layer]
-    H --> I[Final Risk Score]
-```
+The image is resized and converted into grayscale and color spaces for feature extraction. I extract 21 numeric features covering:
+
+- brightness, contrast, and saturation
+- Laplacian sharpness and Sobel edge strength
+- edge density
+- global and local FFT energy
+- moire and banding cues
+- glare and overexposed patch size
+- rectangular contour and perspective cues
+- black bezel estimate
+- paper texture estimate
+- JPEG compression and blockiness
+
+Those features are passed into the XGBoost model. The rule layer then adds a small boost only for strong paired evidence such as bezel plus moire, perspective plus glare, or paper texture plus banding.
+
+## Why This Approach
+
+A direct photo and a recaptured photo can show the same flower, room, book, or building. The useful signal is usually not the subject. It is the second capture process.
+
+That is why I used image processing and frequency analysis instead of a large raw pixel model. The result is small, fast, explainable, and practical to run on a CPU.
+
+## Metrics
+
+| Metric | Value | Validation Method | Notes |
+| --- | ---: | --- | --- |
+| ICL Accuracy | ~98.9% | GroupShuffleSplit | Grouped split to reduce scene leakage |
+| ICL F1 | ~99.2% | GroupShuffleSplit | Lab dataset metric |
+| Phone CV F1 | ~79.5% | 5 fold stratified CV | Honest small phone set estimate |
+| Phone Calibration Score | 100% | Same 53 phone images used for threshold selection | Calibration only |
+| Threshold | 0.65 | Selected after calibration | Final decision threshold |
+
+The 100% phone calibration score is not an independent benchmark. Those 53 images were also involved in selecting the threshold. The more honest phone domain estimate is the 5 fold CV result of about 79.5% F1. I am not claiming production accuracy from the small phone set.
 
 ## Risk Bands
 
-| Score Range | UI Label                  | Meaning                          |
-| ----------- | ------------------------- | -------------------------------- |
-| 0.00 to 0.35| Likely Real               | Strong direct photo evidence     |
-| 0.35 to 0.65| Borderline                | Ambiguous or mixed signals       |
-| 0.65 to 1.00| Likely Recaptured         | Strong recapture screen evidence |
-
-## Model Metrics
-
-| Metric                  |  Value | Validation Method                                 | Notes                              |
-| ----------------------- | -----: | ------------------------------------------------- | ---------------------------------- |
-| ICL Accuracy            | ~98.9% | GroupShuffleSplit                                 | Leakage free grouped split         |
-| ICL F1                  | ~99.2% | GroupShuffleSplit                                 | Dataset domain metric              |
-| Phone CV F1             | ~79.5% | 5 Fold Stratified CV                              | Honest small phone domain estimate |
-| Phone Calibration Score |   100% | Same 53 phone images used for threshold selection | Calibration only, not independent  |
-| Threshold               |   0.65 | Selected after calibration                        | Used for final decision            |
-
-> [!WARNING]
-> Important: The 100% phone calibration score is not an independent benchmark. It uses the same 53 images that were involved in picking the threshold. The honest phone domain generalization estimate is ~79.5% F1 from a 5 fold CV. I am making no claims about production accuracy here.
-
-## Metric Chart
-
-```mermaid
-xychart-beta
-    title "Validation Metrics"
-    x-axis ["ICL Accuracy", "ICL F1", "Phone CV F1", "Calibration"]
-    y-axis "Score (%)" 0 --> 100
-    bar [98.9, 99.2, 79.5, 100]
-```
-
-**Plain text fallback:**
-```text
-ICL Accuracy        ████████████████████ 98.9%
-ICL F1              ████████████████████ 99.2%
-Phone CV F1         ████████████████░░░░ 79.5%
-Phone Calibration   ████████████████████ 100%*
-```
-`*Calibration only, not independent validation.`
-
-## Screenshots
-
-### Example 1: Real Image
-![Real Image Example](docs/screenshots/real_example.png)
-
-### Example 2: Screen Image
-![Screen Image Example](docs/screenshots/screen_example.png)
+| Score Range | Label | Meaning |
+| --- | --- | --- |
+| `0.00` to `0.35` | Likely real | Strong direct photo evidence |
+| `0.35` to `0.65` | Borderline | Mixed or ambiguous evidence |
+| `0.65` to `1.00` | Likely recaptured | Strong screen or print evidence |
 
 ## Example Behavior
 
-A normal real flower or window image now gets a low score after I audited the features. Direct real objects and text correctly classify as real even if they have labels, books, or posters in them. Screen images usually get high scores because of display and recapture artifacts. Borderline scores are totally expected for weird ambiguous cases.
+| File | Ground Truth | Score | Prediction | Notes |
+| --- | --- | ---: | --- | --- |
+| `real/outdoor.png` | Real | 0.07 | Real | Direct outdoor scene |
+| `real/books.png` | Real | 0.40 | Borderline real | Direct object photo with texture/compression |
+| `flower_screen.jpeg` | Screen | 0.98 | Screen | Recaptured screen example |
+| `screen/laptop.png` | Screen ambiguous | 0.29 | Miss | Synthetic example lacked real recapture artifacts |
 
-| File                 | Ground Truth     | Score | Prediction      | Notes                        |
-| -------------------- | ---------------- | ----: | --------------- | ---------------------------- |
-| real/outdoor.png     | Real             |  0.07 | Real            | Direct outdoor physical scene |
-| real/books.png       | Real             |  0.40 | Borderline Real | Direct object photo, some texture or compression |
-| flower_screen.jpeg   | Screen           |  0.98 | Screen          | Recaptured screen example    |
-| screen/laptop.png    | Screen Ambiguous |  0.29 | Miss Borderline | Synthetic image lacked real recapture artifacts |
+Borderline results are expected on difficult cases. Some real images contain high frequency natural texture, and some recaptured images do not show a clear bezel or obvious screen artifact.
 
-## Challenges and Feature Refinement
+## Feature Refinement
 
-Real images can contain text, posters, labels, books, signs, windows, shadows, glare, shiny objects, and natural high frequency textures that perfectly mimic screen frequencies. On the flip side, recaptured images can look just like normal photos without a visible bezel, and heavy JPEG compression can mimic screen blockiness.
+Early versions overreacted to natural texture. Flower petals, fabric, sunlight, windows, labels, and posters can trigger frequency or contour features even when the image is a real direct photo.
 
-Earlier versions of my feature logic misfired hard. Naive global FFT, moiré scores, and bezel glare detection triggered incorrectly on natural elements like flower petals or sunlight. 
+I fixed that by making the screen cues more contextual:
 
-To fix this, I added a contextual moiré flatness penalty and forced the bezel glare logic to look for a rectangular screen like contour first. I dropped the weight on global FFT peak energy to focus more on local artifacts, made the rule boosts way more strict and requiring multiple cues, and made the scoring completely transparent so you can see exactly what the raw model score and rule boost total are.
+- moire is reduced when the surrounding area is dense organic texture
+- glare and bezel cues require stronger rectangular screen context
+- global FFT energy is downweighted so the model depends more on local artifact evidence
+- rule boosts require multiple cues instead of a single noisy feature
 
-## Final Model Configuration
+This made the scores easier to audit and reduced false positives on natural scenes.
 
-| Item          | Value                    |
-| ------------- | ------------------------ |
-| Model         | Phone Adapted XGBoost    |
-| Feature count | 21                       |
-| Threshold     | 0.65                     |
+## Final Configuration
+
+| Item | Value |
+| --- | --- |
+| Model | Phone Adapted XGBoost |
+| Feature count | 21 |
+| Threshold | 0.65 |
 | Normal output | Single float from 0 to 1 |
-| Debug mode    | `--json`                 |
-| Rule bypass   | `--json --no-rules`      |
+| Debug mode | `--json` |
+| Rule bypass | `--json --no-rules` |
 
-## Future Improvements
+## Dataset Notes
 
-Next steps would be collecting a lot more diverse phone photos, printout examples, and imagery across totally different devices, screens, and lighting setups to build a true held out independent phone test set. This will make calibration much better. It would also be great to add SHAP explanations, try out a tiny MobileNet or ONNX model for edge cases, and pull in more external recapture datasets after doing a thorough license and label audit.
-
-## Dataset Sources
-
-This project relies on the ICL Single Capture and Recaptured Image Database plus my own user phone dataset. I completely avoided random unlabeled Google images and AI generated images. Any external datasets were strictly licensed and audited. See [DATASET_SOURCES.md](DATASET_SOURCES.md) for full details.
+The training work used the ICL Single Capture and Recaptured Image Database along with a small personal phone photo set. The full raw datasets are intentionally not included in this repository. See [DATASET_SOURCES.md](DATASET_SOURCES.md) for source and label details.
 
 ## Running Locally
 
@@ -192,16 +134,36 @@ pip install -r requirements.txt
 python predict.py path/to/image.jpg
 python predict.py path/to/image.jpg --json
 uvicorn backend.app:app --host 127.0.0.1 --port 8000
+```
+
+Frontend:
+
+```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-## Deployment
+## Docker
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for Hugging Face Docker Space deployment.
+```bash
+docker build -t salescode-recapture-detector .
+docker run --rm -p 7860:7860 salescode-recapture-detector
+```
 
-- Docker Space
-- port 7860
-- do not upload dataset
-- deploy only model/backend/frontend/docs
+Then open:
+
+```text
+http://127.0.0.1:7860/
+http://127.0.0.1:7860/health
+```
+
+## Files
+
+- `predict.py` is the required command line predictor.
+- `features.py` extracts the 21 handcrafted features.
+- `model.joblib` is the trained XGBoost model.
+- `model_metadata.json` stores threshold and feature metadata.
+- `backend/app.py` serves the API and built frontend.
+- `frontend/` contains the dashboard.
+- `reports/` contains validation and debugging summaries.
