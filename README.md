@@ -1,10 +1,6 @@
 ---
 title: SalesCode Recapture Detector
 Live Link : https://huggingface.co/spaces/Kartikeym2007/salescode-recapture-detector
-colorFrom: green
-colorTo: gray
-sdk: docker
-app_port: 7860
 ---
 
 # SalesCode Recapture Detector
