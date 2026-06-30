@@ -1,6 +1,6 @@
 ---
 title: SalesCode Recapture Detector
-emoji: 🛡️
+Live Link : https://huggingface.co/spaces/Kartikeym2007/salescode-recapture-detector
 colorFrom: green
 colorTo: gray
 sdk: docker
