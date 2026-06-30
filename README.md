@@ -1,6 +1,6 @@
 ---
 title: SalesCode Recapture Detector
-emoji: shield
+emoji: 🛡️
 colorFrom: green
 colorTo: gray
 sdk: docker
