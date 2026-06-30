@@ -1,0 +1,25 @@
+{
+    "total_tested": 53,
+    "real_images": 25,
+    "screen_images": 28,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "avg_real_score": 0.3774526742992122,
+    "avg_screen_score": 0.975637678588863,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "confusion_matrix": [
+        [
+            25,
+            0
+        ],
+        [
+            0,
+            28
+        ]
+    ],
+    "validation_method": "Held-out Calibration Score on Adaptation Set",
+    "honest_5_fold_cv_f1": 0.795
+}

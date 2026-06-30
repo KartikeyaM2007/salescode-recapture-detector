@@ -1,0 +1,13 @@
+opencv-python-headless
+numpy
+Pillow
+scikit-learn
+pandas
+matplotlib
+seaborn
+fastapi
+uvicorn
+python-multipart
+xgboost
+joblib
+tqdm

@@ -1,0 +1,5 @@
+Model,Phone_CV_F1_Score
+ICL Base,0.7295324283559578
+Threshold-Calibrated,0.7383559577677224
+Phone-Adapted,0.7953156647274295
+Rule-Boosted Hybrid,0.7383559577677224

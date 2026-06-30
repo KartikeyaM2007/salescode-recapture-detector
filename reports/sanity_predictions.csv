@@ -1,0 +1,11 @@
+filepath,category,true_label,raw_model_score,rule_boost_total,final_score,threshold,predicted_label,correct,top_boost_reason
+manual_test\unknown\bonfire.jpg,unknown,screen,0.9567980754811017,0.0,0.9567980754811017,0.65,1,True,
+manual_test\unknown\dice.png,unknown,screen,0.9574196995518912,0.0,0.9574196995518912,0.65,1,True,
+manual_test\unknown\flower.jpeg,unknown,screen,0.4143498071740948,0.0,0.4143498071740948,0.65,0,False,
+manual_test\unknown\flower_screen.jpeg,unknown,screen,0.9754694901205951,0.0,0.9754694901205951,0.65,1,True,
+manual_test\unknown\real\books.png,real,real,0.3977484376091156,0.0,0.3977484376091156,0.65,0,True,
+manual_test\unknown\real\flower.png,real,real,0.08575411148356808,0.0,0.08575411148356808,0.65,0,True,
+manual_test\unknown\real\outdoor.png,real,real,0.07376082472993821,0.0,0.07376082472993821,0.65,0,True,
+manual_test\unknown\real\room.png,real,real,0.07128250370231358,0.0,0.07128250370231358,0.65,0,True,
+manual_test\unknown\real\selfie.png,real,real,0.09647681896399046,0.0,0.09647681896399046,0.65,0,True,
+manual_test\unknown\screen\laptop.png,screen,screen,0.29341881784596713,0.0,0.29341881784596713,0.65,0,False,

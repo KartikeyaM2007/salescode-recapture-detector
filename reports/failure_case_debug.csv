@@ -1,0 +1,5 @@
+image,raw_model_score,final_score,rule_boost_total,predicted_label,h_freq_peak,v_freq_peak,diag_freq_peak,local_fft_hf,saturation,bezel_score,perspective_score,moire_score,paper_texture,compression_score,glare_score
+real 1.jpeg (no rules),0.8889,0.8000,0.0000,1,346623,286263,121851,111.48,101.90,0.372,0.0,1.368,31.63,4.33,0.001
+real 1.jpeg (rules),0.8889,0.7889,-0.1000,1,346623,286263,121851,111.48,101.90,0.372,0.0,1.368,31.63,4.33,0.001
+fake 1.jpeg (no rules),0.9759,0.8000,0.0000,1,297614,300701,140673,124.98,108.70,0.899,0.0,3.275,74.20,4.90,0.002
+fake 1.jpeg (rules),0.9759,1.0000,0.1500,1,297614,300701,140673,124.98,108.70,0.899,0.0,3.275,74.20,4.90,0.002

@@ -1,0 +1,54 @@
+filepath,true_label,predicted_score,predicted_label,correct
+manual_real_flower_01.jpeg,0,0.4143498071740948,0,True
+manual_real_flower_02.jpeg,0,0.4307417618127822,0,True
+WhatsApp Image 2026-06-30 at 4.09.45 PM.jpeg,0,0.48704378648904356,0,True
+WhatsApp Image 2026-06-30 at 4.09.46 PM (1).jpeg,0,0.08113265686163133,0,True
+WhatsApp Image 2026-06-30 at 4.09.46 PM.jpeg,0,0.4310108082536173,0,True
+WhatsApp Image 2026-06-30 at 4.09.47 PM (1).jpeg,0,0.44234839220088834,0,True
+WhatsApp Image 2026-06-30 at 4.09.47 PM (2).jpeg,0,0.40077810430623256,0,True
+WhatsApp Image 2026-06-30 at 4.09.47 PM (3).jpeg,0,0.0782681214834416,0,True
+WhatsApp Image 2026-06-30 at 4.09.47 PM (4).jpeg,0,0.07465416230637455,0,True
+WhatsApp Image 2026-06-30 at 4.09.47 PM.jpeg,0,0.4378094730744182,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (1).jpeg,0,0.07202826896628349,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (10).jpeg,0,0.504569590495371,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (11).jpeg,0,0.4009503527179816,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (12).jpeg,0,0.38558504398550647,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (13).jpeg,0,0.38716232675352696,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (14).jpeg,0,0.4000589507085303,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (2).jpeg,0,0.6451865021509291,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (3).jpeg,0,0.4770650434038564,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (4).jpeg,0,0.4625756532655532,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (5).jpeg,0,0.5108455742598134,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (6).jpeg,0,0.47111374953560237,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (7).jpeg,0,0.4078022533346979,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (8).jpeg,0,0.3998019507272333,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM (9).jpeg,0,0.3987221751746486,0,True
+WhatsApp Image 2026-06-30 at 4.09.48 PM.jpeg,0,0.23471234803824648,0,True
+manual_screen_flower_01.jpeg,1,0.9754694901205951,1,True
+manual_screen_flower_02.jpeg,1,0.9764702850362195,1,True
+WhatsApp Image 2026-06-30 at 4.15.03 PM.jpeg,1,0.9761295835597563,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (1).jpeg,1,0.9769389739853634,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (10).jpeg,1,0.9760082342606919,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (11).jpeg,1,0.9759075071244093,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (12).jpeg,1,0.9749948655176692,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (13).jpeg,1,0.9764377131881572,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (14).jpeg,1,0.9733303413971645,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (15).jpeg,1,0.9731645999720199,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (16).jpeg,1,0.9767041903488067,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (17).jpeg,1,0.9744333608665824,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (18).jpeg,1,0.9757644867868862,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (19).jpeg,1,0.9766918141432591,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (2).jpeg,1,0.9750029216058858,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (20).jpeg,1,0.9766699872602609,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (21).jpeg,1,0.9746498964318088,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (22).jpeg,1,0.9756623058453213,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (23).jpeg,1,0.9765740943157103,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (24).jpeg,1,0.9765606494820164,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (3).jpeg,1,0.9767736775211625,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (4).jpeg,1,0.9729718287699191,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (5).jpeg,1,0.9767318584558488,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (6).jpeg,1,0.9742387250619832,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (7).jpeg,1,0.9740261181270848,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (8).jpeg,1,0.9758066183770232,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM (9).jpeg,1,0.9768016868676451,1,True
+WhatsApp Image 2026-06-30 at 4.15.04 PM.jpeg,1,0.9769391860589112,1,True

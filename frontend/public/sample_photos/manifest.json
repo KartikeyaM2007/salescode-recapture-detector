@@ -1,0 +1,74 @@
+[
+    {
+        "id": "real_001",
+        "label": "real",
+        "title": "Real phone photo 001",
+        "path": "/sample_photos/real/real_001.jpg"
+    },
+    {
+        "id": "real_002",
+        "label": "real",
+        "title": "Real phone photo 002",
+        "path": "/sample_photos/real/real_002.jpg"
+    },
+    {
+        "id": "real_003",
+        "label": "real",
+        "title": "Real phone photo 003",
+        "path": "/sample_photos/real/real_003.jpg"
+    },
+    {
+        "id": "real_004",
+        "label": "real",
+        "title": "Real phone photo 004",
+        "path": "/sample_photos/real/real_004.jpg"
+    },
+    {
+        "id": "real_005",
+        "label": "real",
+        "title": "Real phone photo 005",
+        "path": "/sample_photos/real/real_005.jpg"
+    },
+    {
+        "id": "real_006",
+        "label": "real",
+        "title": "Real phone photo 006",
+        "path": "/sample_photos/real/real_006.jpg"
+    },
+    {
+        "id": "screen_001",
+        "label": "screen",
+        "title": "Screen recapture 001",
+        "path": "/sample_photos/screen/screen_001.jpg"
+    },
+    {
+        "id": "screen_002",
+        "label": "screen",
+        "title": "Screen recapture 002",
+        "path": "/sample_photos/screen/screen_002.jpg"
+    },
+    {
+        "id": "screen_003",
+        "label": "screen",
+        "title": "Screen recapture 003",
+        "path": "/sample_photos/screen/screen_003.jpg"
+    },
+    {
+        "id": "screen_004",
+        "label": "screen",
+        "title": "Screen recapture 004",
+        "path": "/sample_photos/screen/screen_004.jpg"
+    },
+    {
+        "id": "screen_005",
+        "label": "screen",
+        "title": "Screen recapture 005",
+        "path": "/sample_photos/screen/screen_005.jpg"
+    },
+    {
+        "id": "screen_006",
+        "label": "screen",
+        "title": "Screen recapture 006",
+        "path": "/sample_photos/screen/screen_006.jpg"
+    }
+]

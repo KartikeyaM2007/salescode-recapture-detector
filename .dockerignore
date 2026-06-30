@@ -1,0 +1,32 @@
+# Ignore datasets and heavy raw data
+dataset/
+dataset/raw/
+dataset/Data/
+RecapturedImages.zip
+SingleCaptureImages.zip
+SubjectiveTestImages.zip
+*.zip
+
+# Ignore node_modules
+node_modules/
+frontend/node_modules/
+
+# Ignore Python cache & env
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore local output/logs/cache
+cache/
+manual_test/
+submission/
+logs/
+
+# Optional large reports
+reports/*.csv

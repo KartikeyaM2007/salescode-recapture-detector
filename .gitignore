@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+.pytest_cache/
+.mypy_cache/
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+
+# datasets and raw data
+dataset/raw/
+dataset/Data/
+dataset/**/*.zip
+*.zip
+RecapturedImages.zip
+SingleCaptureImages.zip
+SubjectiveTestImages.zip
+
+# local/manual test data
+manual_test/
+dataset/my_photos/
+dataset/real/
+dataset/screen/
+
+# caches/logs
+*.log
+.cache/
+.DS_Store
+Thumbs.db
+
+# generated submission package
+submission/*.zip

@@ -1,0 +1,36 @@
+{
+    "model_type": "Phone-Adapted XGBoost",
+    "threshold": 0.65,
+    "calibration_status": "Phone-Adapted (Full Dataset)",
+    "icl_metrics": {
+        "accuracy": 0.9888392857142857,
+        "precision": 0.9923954372623575,
+        "recall": 0.9886363636363636,
+        "f1_score": 1.0,
+        "roc_auc": 0.9996706192358367
+    },
+    "feature_count": 21,
+    "feature_names": [
+        "banding_score",
+        "bezel_score",
+        "blockiness",
+        "brightness",
+        "compression_diff",
+        "contrast",
+        "diag_freq_peak",
+        "edge_density",
+        "fft_hf_ratio",
+        "glare_patch_size",
+        "glare_ratio",
+        "h_freq_peak",
+        "laplacian_var",
+        "local_fft_hf",
+        "moire_score",
+        "paper_texture",
+        "perspective_score",
+        "rect_contour_score",
+        "saturation",
+        "sobel_mean",
+        "v_freq_peak"
+    ]
+}
