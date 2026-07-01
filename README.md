@@ -3,9 +3,9 @@
 # SalesCode Recapture Detector
 
 **Author:** Kartikeya
+Note :  Very easy to make run on phone as latency is about 200ms and a very light model! Used ml not highly computation deep learning which cant run on most phone  , you can use the script to run locally or our site for testing ( preferred ) 
 
 ---
-title: SalesCode Recapture Detector
 Live Link : https://huggingface.co/spaces/Kartikeym2007/salescode-recapture-detector
 ---
 This project detects whether an input image is a direct real photo or a recaptured image, such as a photo of a screen or printout. The output is a single score from `0` to `1`.
