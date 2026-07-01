@@ -1,13 +1,13 @@
-
-
 # SalesCode Recapture Detector
 
 **Author:** Kartikeya
-Note :  Very easy to make run on phone as latency is about 200ms and a very light model! Used ml not highly computation deep learning which cant run on most phone  , you can use the script to run locally or our site for testing ( preferred ) 
 
----
-Live Link : https://huggingface.co/spaces/Kartikeym2007/salescode-recapture-detector
----
+## Quick Note
+
+> This is a lightweight CPU-only pipeline, not a heavy deep-learning app. It is easy to run locally with `python predict.py image.jpg`, and the same approach can be ported to a phone app because the model is small and warm prediction is about `220 ms` per image. For quick testing, the live site is preferred.
+
+**Live demo:** https://huggingface.co/spaces/Kartikeym2007/salescode-recapture-detector
+
 This project detects whether an input image is a direct real photo or a recaptured image, such as a photo of a screen or printout. The output is a single score from `0` to `1`.
 
 - `0` means real photo
@@ -138,10 +138,24 @@ The training work used the ICL Single Capture and Recaptured Image Database alon
 
 ## Running Locally
 
+Use it like a small script. Keep the model and feature file in the same folder as `predict.py`.
+
+```text
+your-folder/
+|-- predict.py              <- run this
+|-- features.py             <- used by predict.py
+|-- model.joblib            <- used by predict.py
+|-- model_metadata.json     <- threshold and feature metadata
+|-- requirements.txt        <- install dependencies from this
+```
+
+If you move `predict.py` away from `features.py`, `model.joblib`, or `model_metadata.json`, prediction will fail because the script loads those files from the same project folder.
+
 ```bash
 pip install -r requirements.txt
 python predict.py path/to/image.jpg
 python predict.py path/to/image.jpg --json
+python predict.py path/to/image.jpg --no-rules
 uvicorn backend.app:app --host 127.0.0.1 --port 8000
 ```
 
