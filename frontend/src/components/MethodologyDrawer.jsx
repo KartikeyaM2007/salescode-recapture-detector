@@ -79,7 +79,9 @@ export function MethodologyDrawer({ isOpen, onClose }) {
                 <h3 className="text-lg font-bold text-zinc-100 border-b border-zinc-800 pb-2">2. Why This Hybrid Approach?</h3>
                 <p>Deep CNNs (ResNet, MobileNet) require significant compute, large datasets, and heavy libraries (PyTorch/TF). This assignment rewards practical, interpretable signals.</p>
                 <ul className="list-disc pl-5 space-y-1 text-zinc-400">
-                  <li>Fast CPU inference (~1ms for model, ~1s for CV).</li>
+                  <li>Warm CPU prediction is about 210 ms per image on my local Windows laptop.</li>
+                  <li>Command line prediction is about 1.8 s per image because Python, OpenCV, and the model load each run.</li>
+                  <li>Cost per image is $0 locally or inside the Docker Space; no paid API, GPU, or cloud model call is used.</li>
                   <li>No GPU required for deployment.</li>
                   <li>Interpretable feature telemetry (no black box).</li>
                   <li>Small ~360KB model footprint.</li>
@@ -214,7 +216,7 @@ export function MethodologyDrawer({ isOpen, onClose }) {
                 <p>We built an ablation suite to fix false positives on natural images:</p>
                 <div className="space-y-2">
                   <div className="flex gap-2 items-start"><CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" /><p><strong>Moiré Flatness Penalty:</strong> Moiré is downweighted if the surrounding texture is dense/organic.</p></div>
-                  <div className="flex gap-2 items-start"><CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" /><p><strong>Contour Requirement:</strong> Bezel and Glare rules now demand a rectangular screen contour.</p></div>
+                  <div className="flex gap-2 items-start"><CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" /><p><strong>Screen Context Boost:</strong> Rectangular contour, strong glare, and display-like texture together can lift an under-scored screen case.</p></div>
                   <div className="flex gap-2 items-start"><CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" /><p><strong>FFT Downweighting:</strong> Reduced naive global FFT influence to prevent flagging real sharpness as fraud.</p></div>
                   <div className="flex gap-2 items-start"><CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" /><p><strong>Multi-Cue Rules:</strong> Made rule boosts conservative and multi-cue only.</p></div>
                 </div>
