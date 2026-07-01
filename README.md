@@ -85,11 +85,17 @@ The 100% phone calibration score is not an independent benchmark. Those 53 image
 | `0.35` to `0.65` | Borderline | Mixed or ambiguous evidence |
 | `0.65` to `1.00` | Likely recaptured | Strong screen or print evidence |
 
-## Runtime And Cost
+## Required Numbers: Latency And Cost
 
-The model runs on CPU only. On my local Windows laptop, warm in-process prediction is about `220 ms` per image. Running through the full command line entry point is slower, around `2.4 s` per image, because Python, OpenCV, and the model are loaded each time.
+These are the two required deployment numbers for the assignment.
 
-The cost per image is effectively `0` when run locally or inside the Docker Space. There is no paid API call, GPU, or external service in the prediction path.
+| Item | Reported Value |
+| --- | --- |
+| Device | Local Windows laptop, CPU only |
+| Warm prediction latency | About `220 ms` per image when the Python process is already running |
+| Command line latency | About `2.4 s` per image for `python predict.py image.jpg` because Python, OpenCV, and the model load each run |
+| Cost per image | `$0` locally or inside the Docker Space |
+| External services | None. No paid API, GPU, or cloud model call is used in the prediction path |
 
 ## Example Behavior
 
