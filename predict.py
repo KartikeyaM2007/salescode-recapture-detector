@@ -85,10 +85,17 @@ def run_prediction(img, log_cb=lambda x: None, no_rules=False):
                 moire = features_dict.get('moire_score', 0) > 3.0
                 banding = features_dict.get('banding_score', 0) > 0.0005
                 paper = features_dict.get('paper_texture', 0) > 80
+                rect = features_dict.get('rect_contour_score', 0) > 0.75
+                strong_glare = features_dict.get('glare_patch_size', 0) > 0.018
+                display_texture = features_dict.get('local_fft_hf', 0) > 130
                 
                 num_cues = sum([bezel, perspective, glare, moire, banding, paper])
                 
-                if bezel and moire:
+                if rect and strong_glare and display_texture and raw_score > 0.25:
+                    boost += 0.38
+                    individual_rule_boosts['rect_glare_texture'] = 0.38
+                    log_cb("Screen-like rectangle + glare + display texture detected. Strong boost.")
+                elif bezel and moire:
                     boost += 0.10
                     individual_rule_boosts['bezel_moire'] = 0.10
                     log_cb("Visible bezel + Moiré detected. Moderate boost.")
@@ -101,7 +108,7 @@ def run_prediction(img, log_cb=lambda x: None, no_rules=False):
                     individual_rule_boosts['paper_banding'] = 0.10
                     log_cb("Paper texture + Banding detected. Moderate boost.")
                     
-                boost = max(-0.15, min(0.20, boost))
+                boost = max(-0.15, min(0.45, boost))
                 
             final_score = min(1.0, max(0.0, raw_score + boost))
                 

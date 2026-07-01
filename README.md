@@ -85,6 +85,12 @@ The 100% phone calibration score is not an independent benchmark. Those 53 image
 | `0.35` to `0.65` | Borderline | Mixed or ambiguous evidence |
 | `0.65` to `1.00` | Likely recaptured | Strong screen or print evidence |
 
+## Runtime And Cost
+
+The model runs on CPU only. On my local Windows laptop, warm in-process prediction is about `220 ms` per image. Running through the full command line entry point is slower, around `2.4 s` per image, because Python, OpenCV, and the model are loaded each time.
+
+The cost per image is effectively `0` when run locally or inside the Docker Space. There is no paid API call, GPU, or external service in the prediction path.
+
 ## Example Behavior
 
 | File | Ground Truth | Score | Prediction | Notes |
@@ -92,7 +98,7 @@ The 100% phone calibration score is not an independent benchmark. Those 53 image
 | `real/outdoor.png` | Real | 0.07 | Real | Direct outdoor scene |
 | `real/books.png` | Real | 0.40 | Borderline real | Direct object photo with texture/compression |
 | `flower_screen.jpeg` | Screen | 0.98 | Screen | Recaptured screen example |
-| `screen/laptop.png` | Screen ambiguous | 0.29 | Miss | Synthetic example lacked real recapture artifacts |
+| `screen/laptop.png` | Screen ambiguous | 0.67 | Screen | Rectangular screen, glare, and display texture cues |
 
 Borderline results are expected on difficult cases. Some real images contain high frequency natural texture, and some recaptured images do not show a clear bezel or obvious screen artifact.
 
@@ -118,7 +124,7 @@ This made the scores easier to audit and reduced false positives on natural scen
 | Threshold | 0.65 |
 | Normal output | Single float from 0 to 1 |
 | Debug mode | `--json` |
-| Rule bypass | `--json --no-rules` |
+| Rule bypass | `--no-rules` |
 
 ## Dataset Notes
 

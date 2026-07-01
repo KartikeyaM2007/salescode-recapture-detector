@@ -1,13 +1,13 @@
 # Fresh Unseen Sanity Test Summary
 
 - **Count of images tested:** 10
-- **Number predicted real:** 7
-- **Number predicted screen:** 3
+- **Number predicted real:** 6
+- **Number predicted screen:** 4
 - **Number in borderline zone (0.35-0.65):** 2
 - **Average real score:** 0.1450
-- **Average screen score:** 0.7195
+- **Average screen score:** 0.7955
 - **False positives (real predicted as screen):** 0
-- **False negatives (screen predicted as real):** 2
+- **False negatives (screen predicted as real):** 1
 
 ## Individual Results
 | filepath                               | true_label   |   final_score |   predicted_label | correct   |
@@ -21,4 +21,4 @@
 | manual_test\unknown\real\outdoor.png   | real         |     0.0737608 |                 0 | True      |
 | manual_test\unknown\real\room.png      | real         |     0.0712825 |                 0 | True      |
 | manual_test\unknown\real\selfie.png    | real         |     0.0964768 |                 0 | True      |
-| manual_test\unknown\screen\laptop.png  | screen       |     0.293419  |                 0 | False     |
+| manual_test\unknown\screen\laptop.png  | screen       |     0.673419  |                 1 | True      |

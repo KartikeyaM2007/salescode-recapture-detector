@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { UploadCloud, ShieldAlert, ShieldCheck, Activity, Terminal, Shield, FileImage, Database, LayoutList, Fingerprint, RefreshCcw, FolderOpen, Info } from 'lucide-react'
+import { UploadCloud, ShieldAlert, Activity, Terminal, Shield, FileImage, Database, LayoutList, Fingerprint, RefreshCcw, FolderOpen, Info } from 'lucide-react'
 import { FraudGauge } from './components/FraudGauge'
 import { FeatureBarChart } from './components/FeatureBarChart'
 import { TerminalLogs } from './components/TerminalLogs'
@@ -80,7 +80,7 @@ export default function App() {
       setResult(null)
       setError(null)
       setSelectedSample(sample)
-    } catch (err) {
+    } catch {
       setError("Failed to load sample image")
     }
   }

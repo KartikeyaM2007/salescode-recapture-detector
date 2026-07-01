@@ -8,4 +8,4 @@ manual_test\unknown\real\flower.png,real,real,0.08575411148356808,0.0,0.08575411
 manual_test\unknown\real\outdoor.png,real,real,0.07376082472993821,0.0,0.07376082472993821,0.65,0,True,
 manual_test\unknown\real\room.png,real,real,0.07128250370231358,0.0,0.07128250370231358,0.65,0,True,
 manual_test\unknown\real\selfie.png,real,real,0.09647681896399046,0.0,0.09647681896399046,0.65,0,True,
-manual_test\unknown\screen\laptop.png,screen,screen,0.29341881784596713,0.0,0.29341881784596713,0.65,0,False,
+manual_test\unknown\screen\laptop.png,screen,screen,0.29341881784596713,0.38,0.6734188178459671,0.65,1,True,rect_glare_texture

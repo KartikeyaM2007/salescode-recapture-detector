@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { CheckCircle2, Circle, Loader2, Image as ImageIcon, Search, Activity, Cpu, ShieldCheck, Flag } from 'lucide-react';
+import { CheckCircle2, Loader2, Image as ImageIcon, Search, Activity, Cpu, ShieldCheck, Flag } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const WORKFLOW_STEPS = [

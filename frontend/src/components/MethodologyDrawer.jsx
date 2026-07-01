@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Microscope, Cpu, Shield, AlertTriangle, CheckCircle, Activity, Image as ImageIcon } from 'lucide-react'
+import { X, Microscope, AlertTriangle, CheckCircle } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell } from 'recharts'
 
 export function MethodologyDrawer({ isOpen, onClose }) {
