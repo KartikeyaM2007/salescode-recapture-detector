@@ -4,7 +4,7 @@
 
 ## Quick Note
 
-> This is a lightweight CPU-only pipeline, not a heavy deep-learning app. It is easy to run locally with `python predict.py image.jpg`, and the same approach can be ported to a phone app because the model is small and warm prediction is about `220 ms` per image. For quick testing, the live site is preferred.
+> This is a lightweight CPU-only pipeline, not a heavy deep-learning app. It is easy to run locally with `python predict.py image.jpg`, and the same approach can be ported to a phone app because the model is small and warm prediction is about `210 ms` per image. For quick testing, the live site is preferred.
 
 **Live demo:** https://huggingface.co/spaces/Kartikeym2007/salescode-recapture-detector
 
@@ -92,8 +92,8 @@ These are the two required deployment numbers for the assignment.
 | Item | Reported Value |
 | --- | --- |
 | Device | Local Windows laptop, CPU only |
-| Warm prediction latency | About `220 ms` per image when the Python process is already running |
-| Command line latency | About `2.4 s` per image for `python predict.py image.jpg` because Python, OpenCV, and the model load each run |
+| Warm prediction latency | About `210 ms` per image when the Python process is already running |
+| Command line latency | About `1.8 s` per image for `python predict.py image.jpg` because Python, OpenCV, and the model load each run |
 | Cost per image | `$0` locally or inside the Docker Space |
 | External services | None. No paid API, GPU, or cloud model call is used in the prediction path |
 
